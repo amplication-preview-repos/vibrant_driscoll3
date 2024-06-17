@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Classification {
+  checkResults CheckResult[]
+  createdAt    DateTime      @default(now())
+  id           String        @id @default(cuid())
+  name         String?
+  typeField    String?
+  updatedAt    DateTime      @updatedAt
+}
+
+model CheckResult {
+  classification   Classification? @relation(fields: [classificationId], references: [id])
+  classificationId String?
+  createdAt        DateTime        @default(now())
+  id               String          @id @default(cuid())
+  result           Boolean?
+  updatedAt        DateTime        @updatedAt
+}
